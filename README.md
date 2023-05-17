@@ -1,38 +1,52 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ✨ User list with search functionality ✨
 
-## Getting Started
+## 📖 Tasks:
 
-First, run the development server:
+1. Implement a web app that allows viewing a list of users with pagination with the pages listed below.
+2. Implement a search widget (autocomplete) where you can perform a search all users by user name. For example, typing in `Jo` should list all users that have `Jo` in their name, each suggested item should lunk to the `user` page with the specific id.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## 📄 Pages:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### `/users` - a page with list of users with pagination.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+There are 100 users in total, so let's have 10 pages with 10 user cards on each.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Each page should have its own url: either as separate route `/users/${PAGE_NUM}` or a query parameter `/users?page=${PAGE_NUM}`
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Clicking on the user card should bring you to the `/user/${USER_ID}` page.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+---
 
-## Learn More
+### `/user/${USER_ID}` - a page with information on the specific user based on the provided USER_ID
+---
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ⚙️ API:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### User list with pagination
 
-## Deploy on Vercel
+https://dummyjson.com/users?limit=10&skip=0 - page 1
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+https://dummyjson.com/users?limit=10&skip=10 - page 2
+...
+https://dummyjson.com/users?limit=10&skip=90 - page 10
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Search User by ID
+
+https://dummyjson.com/users/${USER_ID} - where $USER_ID 1-100
+
+https://dummyjson.com/users/1 - https://dummyjson.com/users/100
+
+### Search User by name (this is for task #2)
+
+https://dummyjson.com/users/search?q=${USER_NAME} - where USER_NAME is the name of the user
+
+
+
+<sup>detailed API spec: https://dummyjson.com/docs/users</sup>
+
+## 🔧 Technologies to use:
+
+Next.js, Typescript.
+
+
