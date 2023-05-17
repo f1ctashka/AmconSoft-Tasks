@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { FiSearch, FiUser, FiChevronDown, FiChevronRight } from 'react-icons/fi';
 import { UsersResponseType, User } from '@/types';
 
-const SearchWidget = () => {
+export const SearchWidget = () => {
     const router = useRouter();
     const [searchOptions, setSearchOptions] = useState<{ label: string; value: string }[]>([]);
     const [selectedOption, setSelectedOption] = useState<{ label: string; value: string } | null>(null);
@@ -75,5 +75,3 @@ const SearchWidget = () => {
         </div>
     );
 };
-
-export default SearchWidget;

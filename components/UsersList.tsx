@@ -1,8 +1,8 @@
-import SearchWidget from "@/components/SearchWidget";
+import { SearchWidget } from "@/components/SearchWidget";
+import { Pagination } from '@/components/Pagination';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Pagination from './Pagination';
 import { UsersResponseType, User } from '@/types';
 
 const PAGE_SIZE = 10;

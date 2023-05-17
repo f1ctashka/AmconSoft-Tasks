@@ -1,13 +1,8 @@
 import Link from 'next/link';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { PaginationProps } from "@/types";
 
-interface PaginationProps {
-    currentPage: number;
-    pageCount: number;
-    onPageChange: (page: number) => void;
-}
-
-const Pagination = ({ currentPage, pageCount, onPageChange }: PaginationProps) => {
+export const Pagination = ({ currentPage, pageCount, onPageChange }: PaginationProps) => {
     const getPageNumbers = () => {
         const pageNumbers = [];
 
@@ -57,6 +52,7 @@ const Pagination = ({ currentPage, pageCount, onPageChange }: PaginationProps) =
                     </a>
                 </Link>
             )}
+
             {getPageNumbers().map((pageNumber, index) => {
                 const isNumber = typeof pageNumber === 'number';
                 const isActive = isNumber && pageNumber === currentPage;
@@ -78,6 +74,7 @@ const Pagination = ({ currentPage, pageCount, onPageChange }: PaginationProps) =
           </span>
                 );
             })}
+
             {currentPage < pageCount && (
                 <Link legacyBehavior href={`/users?page=${currentPage + 1}`}>
                     <a
@@ -92,5 +89,3 @@ const Pagination = ({ currentPage, pageCount, onPageChange }: PaginationProps) =
 
     );
 };
-
-export default Pagination;
