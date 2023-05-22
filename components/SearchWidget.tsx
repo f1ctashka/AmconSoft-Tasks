@@ -1,76 +1,71 @@
-import { useEffect, useState } from 'react';
-import Select, { components } from 'react-select';
-import { useRouter } from 'next/router';
-import { FiSearch, FiUser, FiChevronDown, FiChevronRight } from 'react-icons/fi';
-import { UsersResponseType, User } from '@/types';
+import { useEffect, useState, useRef } from 'react';
+import { FiSearch, FiUser, FiChevronRight } from 'react-icons/fi';
+import { UsersResponse, User } from '@/types';
+import Link from "next/link";
 
 export const SearchWidget = () => {
-    const router = useRouter();
-    const [searchOptions, setSearchOptions] = useState<{ label: string; value: string }[]>([]);
-    const [selectedOption, setSelectedOption] = useState<{ label: string; value: string } | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchedUsers, setSearchedUsers] = useState<User[]>([]);
+    const [showList, setShowList] = useState(false);
+    const widgetRef = useRef(null);
 
     useEffect(() => {
-        fetch('https://dummyjson.com/users')
-            .then((res) => res.json())
-            .then((response: UsersResponseType) => {
-                const options = response.users.map((user: User) => ({
-                    label: `${user.firstName} ${user.lastName}`,
-                    value: user.id,
-                }));
-                setSearchOptions(options);
-            });
+        if (searchQuery) {
+            fetch(`https://dummyjson.com/users/search?limit=10&q=${searchQuery}`)
+                .then((res) => res.json())
+                .then((response: UsersResponse) => {
+                    setSearchedUsers(response.users);
+                    setShowList(true);
+                });
+        } else {
+            setSearchedUsers([]);
+            setShowList(false);
+        }
+    }, [searchQuery]);
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
     }, []);
 
-    const handleSearchInputChange = (selectedOption: { label: string; value: string } | null) => {
-        setSelectedOption(selectedOption);
-        if (selectedOption) {
-            router.push(`/users/${selectedOption.value}`);
+    const handleClickOutside = (event) => {
+        if (widgetRef.current && !widgetRef.current.contains(event.target)) {
+            setShowList(false);
         }
-    };
-
-    const DropdownIndicator = (props) => {
-        return (
-            components.DropdownIndicator && (
-                <components.DropdownIndicator {...props}>
-                    <FiChevronDown size={16} className="ml-2 text-gray-500" />
-                </components.DropdownIndicator>
-            )
-        );
-    };
-
-    const UserOption = (props) => {
-        return (
-            components.Option && (
-                <components.Option {...props}>
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                            <FiUser size={16} className="mr-2 text-gray-500" />
-                            <span className="text-black">{props.label}</span>
-                        </div>
-                        <FiChevronRight size={16} className="ml-2 text-gray-500" />
-                    </div>
-                </components.Option>
-            )
-        );
     };
 
     return (
         <div className="flex flex-col items-center py-8 bg-gray-900 text-white">
             <h1 className="text-2xl mb-4 font-bold">Users List</h1>
-            <div className="w-96 p-2 bg-white rounded-lg shadow-md flex items-center">
+            <div className="relative w-96 p-2 bg-white rounded-lg shadow-md flex items-center" ref={widgetRef}>
                 <div className="mr-2">
                     <FiSearch size={18} className="text-gray-500" />
                 </div>
-                <Select
-                    className="space-y-0 flex-grow"
-                    classNamePrefix="search-widget"
-                    options={searchOptions}
-                    value={selectedOption}
-                    onChange={handleSearchInputChange}
-                    placeholder="Search users"
-                    isClearable
-                    components={{ DropdownIndicator, Option: UserOption }}
+                <input
+                    className="w-full border border-gray-800 text-black"
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onClick={() => setShowList(true)}
                 />
+                {showList && searchedUsers.length > 0 && (
+                    <div className="absolute z-50 top-full right-0 bg-white text-blue-950 w-96 py-2 shadow-md rounded-b-lg">
+                        <div className="flex flex-col">
+                            {searchedUsers.map((user) => (
+                                <Link legacyBehavior href={`/users/${user.id}`} key={user.id}>
+                                    <a className="p-2 hover:bg-gray-200 flex items-center">
+                                        <FiUser className="mr-2" size={16} />
+                                        <span>{user.firstName} {user.lastName}</span>
+                                        <FiChevronRight className="ml-auto" size={16} />
+                                    </a>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

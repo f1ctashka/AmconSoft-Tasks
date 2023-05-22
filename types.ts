@@ -1,4 +1,4 @@
-export type UsersResponseType = {
+export type UsersResponse = {
     users: User[];
     total: number;
     skip: number;
@@ -23,5 +23,9 @@ export type Address = {
 export type PaginationProps = {
     currentPage: number;
     pageCount: number;
-    onPageChange: (page: number) => void;
 }
+
+export type SearchOption = {
+    label: string;
+    value: string;
+};
