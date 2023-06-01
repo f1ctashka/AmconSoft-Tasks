@@ -82,7 +82,7 @@ export const SearchWidget = () => {
                     onChange={handleInputChange}
                     onClick={() => setShowList(true)}
                 />
-                {showList && searchedUsers.length > 0 && (
+                {(showList && searchedUsers.length > 0) ? (
                     <div className="absolute z-50 top-full right-0 bg-white text-blue-950 w-96 py-2 shadow-md rounded-b-lg">
                         <div className="flex flex-col">
                             {searchedUsers.map((user) => (
@@ -96,7 +96,7 @@ export const SearchWidget = () => {
                             ))}
                         </div>
                     </div>
-                )}
+                ) : null}
             </div>
         </div>
     );
