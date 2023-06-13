@@ -14,6 +14,12 @@ const Index = () => {
                 </a>
             </Link>
 
+            <Link legacyBehavior href="/table">
+                <a className="bg-gray-600 text-white px-6 py-3 rounded-md mt-8 hover:bg-gray-950 transition-colors duration-300 ease-in-out text-xl shadow-xl">
+                    Go to the Sorting Table
+                </a>
+            </Link>
+
             <footer className="mt-8">
                 <p className="text-gray-500 text-xs">
                     Created by Victoria Ilchenko (@f1ctashka)
