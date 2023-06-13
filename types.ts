@@ -11,6 +11,9 @@ export type User = {
     lastName: string;
     address: Address;
     image: string;
+    age: number;
+    weight: number;
+    height: number;
 };
 
 export type Address = {
